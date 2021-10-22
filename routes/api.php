@@ -19,5 +19,7 @@ Route::prefix('v1')->group(function () {
     Route::get('areas_universidad/{universidad}', [AreasController::class, 'index_api']);
     Route::get('planes', [PlanesController::class, 'index_api']);
 
+
     Route::post('registro', [UserController::class, 'registro']);
+    Route::post('login', [UserController::class, 'login']);
 });

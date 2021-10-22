@@ -29,6 +29,7 @@ class UserController extends Controller
             $user->phone = $request->phone;
             $user->email = $request->email;
             $user->id_universidad = $request->id_universidad;
+
             $user->status = 1;
             $user->tipo_plan = 0;
             $user->plan_id = $plan_free->id;
@@ -44,6 +45,41 @@ class UserController extends Controller
                     "user" => $user
                 ]
             );
+        }
+    }
+
+    public function login( Request $request )
+    {
+        $user = User::where('email', $request->email)->count();
+
+        if($user > 0)
+        {
+            $user_veri = User::where('email', $request->email)->where('password', sha1($request->password))->count();
+            if($user_veri > 0)
+            {
+                $user = User::where('email', $request->email)->get();
+
+                return response()->json([
+                    'error' => null,
+                    'data' => $user
+                ]);
+            }
+            else
+            {
+                return response()->json([
+                    'error' => "Clave no coincide con el correo proporcionado",
+                    'data' => null
+                ]);
+            }
+        }
+        else
+        {
+            return response()->json(
+                [
+                    'error' => "Correo no existe en nuestra Base de datos",
+                    'data' => null
+                ]
+                );
         }
     }
 }
