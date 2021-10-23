@@ -57,7 +57,7 @@ class UserController extends Controller
             $user_veri = User::where('email', $request->email)->where('password', sha1($request->password))->count();
             if($user_veri > 0)
             {
-                $user = User::where('email', $request->email)->get();
+                $user = User::where('email', $request->email)->first();
 
                 return response()->json([
                     'error' => null,
