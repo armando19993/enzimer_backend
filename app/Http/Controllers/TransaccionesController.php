@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\HistorialMembresia;
+use App\Models\Planes;
 use App\Models\Transacciones;
 use Illuminate\Http\Request;
 
@@ -30,9 +31,36 @@ class TransaccionesController extends Controller
 
     public function store(Request $request)
     {
+        $fecha_actual = date('Y-m-d');
+        $plan = Planes::find($request->id_plan);
+        //Membresia
         $membresia = new HistorialMembresia();
         $membresia->id_plan = $request->id_plan;
-        $membresia->codigo_plan = $request->codigo_plan;
+        $membresia->codigo_plan = $request->cupon_id;
+        $membresia->monto = $request->monto;
+        $membresia->fecha_inicio = $fecha_actual;
+        $membresia->fecha_fin = date("Y-m-d",strtotime($fecha_actual."+ ". $plan->duracion ." month"));
+        $membresia->id_usuario = $request->id_usuario;
+        $membresia->save();
+
+        //Transaccion
+        $transaccion = Transacciones::create([
+            'id_historial_membresia' => $membresia->id,
+            'monto' => $request->monto,
+            'status' => 1,
+            'fecha' => $fecha_actual,
+            'codigo_pasarela' => $request->uuid,
+            'card_number' => $request->pan,
+            'tipo_tarjeta' => $request->brand,
+            'ip_pago' => $request->ip_pago
+        ]);
+
+        return response()->json([
+            'data' => $transaccion,
+            'error' => null,
+            'id_transaccion' => $transaccion->codigo_pasarela
+        ]);
+
     }
 
     /**

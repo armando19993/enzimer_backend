@@ -17,6 +17,7 @@ class CreateAreasTable extends Migration
             $table->id();
             $table->string('area');
             $table->integer('id_universidad');
+            $table->integer('gratis');
             $table->timestamps();
         });
     }
