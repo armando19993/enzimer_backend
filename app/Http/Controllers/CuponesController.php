@@ -7,14 +7,29 @@ use Illuminate\Http\Request;
 
 class CuponesController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+
+    public function index_api( $cupon )
     {
-        //
+        $cupon = Cupones::where('codigo', $cupon)->first();
+
+        if($cupon == null)
+        {
+            return response()->json(
+                [
+                    'data' => "",
+                    'error' => "Cupon no existe"
+                ]
+                );
+        }
+        else
+        {
+            return response()->json(
+                [
+                    'data' => $cupon,
+                    'error' => null
+                ]
+                );
+        }
     }
 
     /**

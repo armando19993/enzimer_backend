@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\AreasController;
+use App\Http\Controllers\CuponesController;
 use App\Http\Controllers\PlanesController;
+use App\Http\Controllers\TransaccionesController;
 use App\Http\Controllers\UniversidadController;
 use App\Models\Planes;
 use App\Models\Universidad;
@@ -18,8 +20,11 @@ Route::prefix('v1')->group(function () {
     Route::get('universidades', [UniversidadController::class, 'index_api']);
     Route::get('areas_universidad/{universidad}', [AreasController::class, 'index_api']);
     Route::get('planes', [PlanesController::class, 'index_api']);
+    Route::get('get_cupon/{cupon}', [CuponesController::class, 'index_api']);
 
 
     Route::post('registro', [UserController::class, 'registro']);
     Route::post('login', [UserController::class, 'login']);
+
+    Route::post('update_membresia', [TransaccionesController::class, 'store']);
 });

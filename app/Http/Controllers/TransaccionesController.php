@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\HistorialMembresia;
 use App\Models\Transacciones;
 use Illuminate\Http\Request;
 
@@ -27,15 +28,11 @@ class TransaccionesController extends Controller
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $membresia = new HistorialMembresia();
+        $membresia->id_plan = $request->id_plan;
+        $membresia->codigo_plan = $request->codigo_plan;
     }
 
     /**
